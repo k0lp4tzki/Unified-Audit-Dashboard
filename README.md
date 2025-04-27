@@ -12,6 +12,19 @@ This project provides a clean, modern web interface to view and filter audit dat
 
 ---
 
+-- Preview
+
+## Preview
+
+![Dashboard Preview](assets/grafik-1.png)
+![Filter Example](assets/grafik-6.png)
+![Preview](grafik-2.png)
+![Preview](grafik-3.png)
+![Preview](grafik-4.png)
+![Preview](grafik-5.png)
+
+
+
 ## Project Structure
 
 Below is an overview of the most important files and their roles:
