@@ -31,8 +31,8 @@ This guide explains the necessary system requirements and setup steps to success
 ### 1. Install Apache Web Server
 Install Apache if it's not already installed:
 
-sudo apt update
-sudo apt install apache2
+    sudo apt update
+    sudo apt install apache2
 
 
 2. Install Oracle Instant Client
@@ -41,10 +41,10 @@ Follow the official guide to install the Oracle Instant Client: 👉 Oracle Inst
 
 Make sure to update the system library cache:
 
-sudo ldconfig /path/to/your/oracle/instantclient
+    sudo ldconfig /path/to/your/oracle/instantclient
 
 
-sudo ldconfig /path/to/your/oracle/instantclient
+    sudo ldconfig /path/to/your/oracle/instantclient
 
 Replace /path/to/your/oracle/instantclient with the actual install path.
 
@@ -52,15 +52,15 @@ Replace /path/to/your/oracle/instantclient with the actual install path.
 
 Install PHP with necessary extensions:
 
-sudo apt install php php-oci8 php-ldap
+    sudo apt install php php-oci8 php-ldap
 
 Depending on your distribution, you may need to enable oci8 manually or specify the Oracle Home path in your php.ini.
 4. Configure SSL (optional but recommended)
 
 Enable SSL in Apache:
 
-sudo a2enmod ssl
-sudo a2ensite default-ssl
+    sudo a2enmod ssl
+    sudo a2ensite default-ssl
 
 Edit your SSL VirtualHost (vhost-ssl.conf or default-ssl.conf) to point to your certificate files:
 
@@ -94,6 +94,11 @@ AddHandler application/x-httpd-php .php
 7. Oracle Connection Check
 
 Verify that oci_connect() or new PDO('oci:...') successfully connects to your Oracle database from a simple PHP script.
+
+8. In my case, the table name was DASHBOARD, so every sql query is 'FROM DASHBOARD'. If you need to change it to your specific needs or conventions, feel free.
+
+9. Envinronment Installation: Because the original UNIFIED_AUDIT_TRAIL keeps some LOB Locators and oracle doesn't allow to send this type over database links it is necessary to create a global temp table and reflect your unified audit trail into this new table. Please have a look at the .SQL Files for further informations.
+
 
 If connection fails:
 
