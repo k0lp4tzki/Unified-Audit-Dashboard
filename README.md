@@ -12,16 +12,15 @@ This project provides a clean, modern web interface to view and filter audit dat
 
 ---
 
--- Preview
 
 ## Preview
 
-![Dashboard Preview](assets/grafik-1.png)
-![Filter Example](assets/grafik-6.png)
-![Preview](grafik-2.png)
-![Preview](grafik-3.png)
-![Preview](grafik-4.png)
-![Preview](grafik-5.png)
+![Dashboard Preview](UAD/assets/grafik-1.png)
+![Filter Example](UAD/assets/grafik-6.png)
+![Preview](UAD/assets/grafik-2.png)
+![Preview](UAD/assets/grafik-3.png)
+![Preview](UAD/assets/grafik-4.png)
+![Preview](UAD/assets/grafik-5.png)
 
 
 
