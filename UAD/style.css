@@ -1,0 +1,558 @@
+css
+/* Global styling */
+/* Immediately hide the sidebar when JS is not ready */
+/* Initial state: sidebar completely hidden until JS is ready */
+body.no-js .pie-chart-sidebar {
+    display: none; /* Sidebar won't even be rendered on page load */
+}
+
+/* Sidebar collapse logic */
+.pie-chart-sidebar {
+    position: fixed;
+    left: 0;
+    top: 50px;
+    width: 25%;
+    padding: 12px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease, visibility 0.3s ease;
+    
+    text-align: center;
+}
+
+.title-container {
+    text-align: center; /* Zentriert alle Elemente in der Container-Div */
+}
+
+
+h5 {
+    margin-top: 10px; /* Abstand zwischen Logo und dem Text */
+    font-size: 24px; /* Schriftgröße für "UNIFIED AUDITING DASHBOARD" */
+    color: black;
+}
+
+.powered {
+    font-size: 14px; 
+    color: gray;
+    margin-top: 5px; /* Leichter Abstand nach oben */
+}
+
+
+/* When sidebar is collapsed */
+.pie-chart-sidebar.collapsed {
+    width: 0;
+    display: none;
+    padding: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+}
+
+.container {
+    max-width: 71%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    margin-left: 18%;
+}
+
+/* Row styling */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+}
+
+.card {
+    max-width: 100%;
+    overflow-x: auto; /* Ermöglicht horizontales Scrollen, falls nötig */
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-color: #fff;
+}
+
+/* Stellt sicher, dass die Tabelle sich anpasst */
+.card table {
+    width: 100%; /* Tabelle nimmt die volle Breite des Containers ein */
+    min-width: 600px; /* Falls nötig, kannst du eine Mindestbreite setzen */
+    border-collapse: collapse;
+}
+
+td:hover {
+    box-shadow: 0 0 5px rgba(0, 150, 255, 0.5);
+    background-color: rgba(0, 150, 255, 0.1);
+    cursor: pointer;
+}
+
+/* Optional: Kleinere Schrift für Mobilgeräte */
+@media screen and (max-width: 768px) {
+    .card h2 {
+        font-size: 1.2rem;
+    }
+
+    .card table {
+        font-size: 0.9rem; /* Kleinere Schrift für bessere Darstellung */
+    }
+
+    .card {
+        padding: 10px;
+    }
+}
+
+
+/* Hover effect for chart containers */
+.chart-container:hover {
+    transform: translateY(-5px);
+}
+
+#mainContainer {
+    margin-left: 28%;
+    /*transition: margin-left 0.3s ease; /* Add transition */
+}
+
+#mainContainer.full-width {
+    margin-left: 10%; /* Adjusted when sidebar is collapsed */
+}
+
+.btn-collapse {
+    position: fixed;
+    /*! top: 50%; */
+    left: 25%;
+    transform: translateX(-50%);
+    background-color: #009460;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 13px;
+    cursor: pointer;
+    font-size: 1.5em;
+    z-index: 1100;
+    box-shadow: 2px 2px 11px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Controlled transitions */
+}
+
+.btn-collapse:hover {
+    background-color: #0056b3;
+}
+
+.filter-ui {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+#filterInput {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#resetFilterBtn {
+    padding: 8px 15px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#filterInput:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Button styling */
+.btn {
+    background-color: #009460;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #009460;
+}
+
+/* Chart animations */
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Flexbox for horizontal alignment */
+.title-container {
+    display: flex;              /* Flexbox layout */
+    justify-content: center;    /* Center elements horizontally */
+    align-items: center;        /* Center elements vertically */
+    gap: 10px;                  /* Add space between elements */
+    margin-bottom: 20px;        /* Space below the title */
+}
+
+/* Style for the images */
+.logo {
+    height: 150px;               /* Set the height for both logos */
+    margin-left: 5px;
+    margin-right: 5px;          /* Adjust spacing for the logos */
+}
+
+
+/* Style for the images */
+.logo_brand {
+    height: 40px;               /* Set the height for both logos */
+    margin-left: 5px;
+    margin-right: 5px;          /* Adjust spacing for the logos */
+}
+
+/* Style for the text */
+.title-container h4 {
+    margin: 0 10px;             /* Adjust margin around the text */
+    font-weight: bold;          /* Make the text bold */
+    font-size: 1.5rem;          /* Increase the font size */
+}
+
+
+/* Expanded chart style */
+.expandable-chart {
+    transition: all 0.3s ease;
+    overflow: hidden;
+    height: 400px;
+    width: 100%;
+}
+
+.expanded {
+    height: 900px !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .col-md-6, .col-md-3 {
+        width: 100%; /* Stack columns on smaller screens */
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .card-header {
+        font-size: 1.2em;
+    }
+}
+
+
+/* The chart container inside the sidebar */
+.pie-chart-sidebar .chart-container {
+    height: 200px;  /* Set a fixed height for the pie charts */
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Main container shifted to the right to make space for the sidebar */
+.container.mt-5 {
+    margin-left: 28%;  /* Leave space for the sidebar */
+}
+
+/* Ensure the rest of the content takes full width */
+.col-md-10 {
+    width: 100%;
+}
+
+/* Flexbox for horizontal alignment in Sidebar */
+.sidebar-title-container {
+    display: flex;
+    justify-content: center;    /* Center elements horizontally */
+    align-items: center;        /* Center elements vertically */
+    gap: 10px;                  /* Space between logo and text */
+    margin-bottom: 20px;        /* Add space below the title */
+    padding-top: 10px;          /* Adjust top padding to align vertically with Main Title */
+}
+
+/* Style for the images in Sidebar */
+.sidebar-title-container .logo {
+    height: 40px;               /* Set the height for the sidebar logo */
+}
+
+/* Style for the text in Sidebar */
+.sidebar-title-container h4 {
+    margin: 0 10px;             /* Adjust margin around the text */
+    font-weight: bold;          /* Make the text bold */
+    font-size: 1.5rem;          /* Increase the font size */
+}
+
+/* Preloader styles */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff; /* Hintergrundfarbe während des Ladens */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Sicherstellen, dass es über allem liegt */
+}
+
+/* Container für Bild und Spinner */
+.preloader-container {
+    position: relative;
+    width: 100px; /* Breite des Containers, abhängig von der Größe des Bildes und Spinners */
+    height: 100px; /* Höhe des Containers */
+}
+
+.spinner {
+    width: 150px;
+    height: 150px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: spin 2s linear infinite;
+    
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Zentriertes Bild */
+.preloader-img {
+    width: 80px;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Bild genau in der Mitte positionieren */
+    z-index: 1; /* Sicherstellen, dass das Bild über dem Spinner liegt */
+}
+
+
+#searchInput 
+{
+    margin: 10px 0px;
+    padding: 8px;
+    width: 60%;
+    box-sizing: border-box;
+}
+
+Element {
+    margin: 10px 0px;
+    padding: 8px;
+    background-color: rgb(244, 67, 54);
+    color: white;
+    border: medium;
+    cursor: pointer;
+  }
+
+/* Audit Summary Cards in Sidebar */
+.audit-summary-cards {
+    display: flex; /* Aktiviert Flexbox */
+    flex-direction: column; /* Damit die Elemente vertikal angeordnet werden */
+    justify-content: center; /* Zentriert die Elemente vertikal */
+    align-items: center; /* Zentriert die Elemente horizontal */
+    margin-bottom: 20px; /* Abstand zu anderen Elementen */
+}
+
+.audit-summary-cards .card {
+    width: 100%; /* Karten füllen die gesamte Breite der Sidebar */
+    border-radius: 10px; /* Abgerundete Ecken für die Karten */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
+    margin-bottom: 15px; /* Abstand zwischen den Karten */
+}
+
+/* Text styling for the card */
+.audit-summary-cards h3 {
+    font-size: 1.2rem; /* Kleinere Schriftgröße */
+}
+
+.audit-summary-cards h1 {
+    font-size: 2rem; /* Größere Schriftgröße für Zahlen */
+}
+
+
+.line-chart-container.collapsed {
+    display: none !important;
+}
+
+
+/* Styling for the logout container */
+
+.logout-container {
+   position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 10;
+}
+
+.logout-container .btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #dc3545; /* Bootstrap danger color */
+    border: none;
+    cursor: pointer;
+}
+
+.logout-container .btn:hover {
+    background-color: #c82333; /* Darken on hover */
+}
+
+
+.table {
+    table-layout: auto; /* Ensure uniform column width */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap; /* Prevents text wrapping */
+    text-overflow: ellipsis; /* Adds "..." for overflow */
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Fix inconsistent column widths */
+.table td:nth-child(1), /* OS Username */
+.table td:nth-child(3), /* DB Username */
+.table td:nth-child(4), /* Action Name */
+.table td:nth-child(5), /* Return Code */
+.table td:nth-child(7), /* OS Process */
+.table td:nth-child(11), /* Database */
+.table td:nth-child(9) /* Current User */ { 
+    width: 5%;
+}
+
+.table td:nth-child(6) /* Client Program */ { 
+    width: 15%;
+}
+
+.table td:nth-child(8), /* Privilege */
+.table td:nth-child(10), /* Policy */
+.table td:nth-child(12),
+.table td:nth-child(2) /* Userhost */ { 
+    width: 15%;
+}
+
+/* Ensure smooth opacity transitions */
+#auditTableBody {
+    transition: opacity 0.3s ease-in-out;
+}
+
+  .filtered-cell {
+    font-weight: bold;
+}
+
+
+/* CSS ERGÄNZUNG */
+.btn-pulse {
+    animation: pulse 0.3s ease-in-out;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+  }
+ 
+  /* First-Hint-Styles */
+  .first-filter-hint {
+    background: #e3f2fd;
+    border-left: 4px solid #0d6efd;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  .first-filter-hint span {
+    font-size: 14px;
+  }
+  
+  .close-hint {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #666;
+    margin-left: 10px;
+  }
+  
+  /* Toast-Styles */
+  .quick-toast {
+    position: absolute;
+    bottom: 50%;
+    left: 45%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: white;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+  
+  .quick-toast.info { background: #0d6efd; }
+  .quick-toast.error { background: #dc3545; }
+  
+  @keyframes slideIn {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+  }
+  
+  .pagination a:hover {
+    background-color: #e0e0e0;
+    color: #000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+  
