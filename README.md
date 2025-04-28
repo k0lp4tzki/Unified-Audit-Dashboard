@@ -18,10 +18,10 @@ This project provides a clean, modern web interface to view and filter audit dat
 
 ![Dashboard Preview](assets/grafik-1.png)
 ![Filter Example](assets/grafik-6.png)
-![Preview](grafik-2.png)
-![Preview](grafik-3.png)
-![Preview](grafik-4.png)
-![Preview](grafik-5.png)
+![Preview](assets/grafik-2.png)
+![Preview](assets/grafik-3.png)
+![Preview](assets/grafik-4.png)
+![Preview](assets/grafik-5.png)
 
 
 

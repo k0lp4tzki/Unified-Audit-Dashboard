@@ -129,6 +129,7 @@ window.filterSystem = {
   
     const resetBtn = document.createElement("button");
     resetBtn.className = "btn btn-danger";
+    resetBtn.id = "resetBtn";
     resetBtn.textContent = "Clear";
     resetBtn.style.backgroundColor = "red";
     resetBtn.onclick = resetFilter;
