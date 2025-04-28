@@ -134,7 +134,7 @@ window.filterSystem = {
     resetBtn.style.backgroundColor = "red";
     resetBtn.onclick = resetFilter;
   
-    // 1. Erweitere die Button-Initialisierung in createSearchSection()
+    // 1. Extend button init in createSearchSection()
     const combineBtn = document.createElement("button");
     combineBtn.className = "btn btn-info";
     combineBtn.textContent = "+ Combine";
@@ -148,7 +148,7 @@ window.filterSystem = {
   
     searchRow.append(searchInput, exactMatchContainer, saveBtn, resetBtn, combineBtn);
   
-    // Aktiver Filter Anzeige
+    // Current active filter 
     const activeFilterDisplay = document.createElement("div");
     activeFilterDisplay.id = "activeFilterDisplay";
     activeFilterDisplay.style.cssText = `
@@ -160,7 +160,7 @@ window.filterSystem = {
       margin-top: 10px;
     `;
   
-    // Gespeicherte Filter
+    // saved filter
     const savedFiltersHeader = document.createElement("h5");
     savedFiltersHeader.textContent = "Saved filters:";
     savedFiltersHeader.style.margin = "15px 0 5px 0";
@@ -197,13 +197,13 @@ window.filterSystem = {
     header.textContent = "Show columns:";
     header.style.marginBottom = "10px";
   
-    // Header-Container für Titel + Reset-Link
+    // header container
     const headerContainer = document.createElement("div");
     headerContainer.style.display = "flex";
     headerContainer.style.alignItems = "center";
     headerContainer.style.justifyContent = "space-between";
     
-    // Reset-Link erstellen
+    // create show all link
     const resetLink = document.createElement("a");
     resetLink.href = "#";
     resetLink.style.cssText = `
@@ -216,17 +216,17 @@ window.filterSystem = {
     resetLink.textContent = "Show all";
     resetLink.onclick = function(e) {
       e.preventDefault();
-      // Alle Spalten aktivieren
+      // activate all columns (show all)
       window.filterSystem.columnKeys.forEach(key => {
         window.filterSystem.columnVisibility[key] = true;
       });
       
-      // Checkboxen aktualisieren
+      // refresh checkbox
       document.querySelectorAll('#columnsContainer input[type="checkbox"]').forEach(checkbox => {
         checkbox.checked = true;
       });
       
-      // Zustand speichern und anwenden
+      // Save current state
       localStorage.setItem('columnVisibility', JSON.stringify(window.filterSystem.columnVisibility));
       applyColumnVisibility();
     };
@@ -241,7 +241,7 @@ window.filterSystem = {
       gap: 10px;
     `;
   
-    // Checkboxen für alle Spalten erstellen
+    // Create checkboxes for all columns
     window.filterSystem.columnKeys.forEach(columnKey => {
       const checkboxId = `colToggle_${columnKey}`;
       const isChecked = window.filterSystem.columnVisibility[columnKey] !== false;
@@ -273,7 +273,7 @@ window.filterSystem = {
   
   /* ========== SPALTEN-VISIBILITY ========== */
   function initializeColumnVisibility() {
-    // Setze Standardwerte für nicht gespeicherte Spalten
+    // Set a fallback default value for not saved columns
     let needsSave = false;
     window.filterSystem.columnKeys.forEach(key => {
       if (window.filterSystem.columnVisibility[key] === undefined) {
@@ -322,20 +322,21 @@ function setupKeyboardListener() {
     const filterInput = document.getElementById("filterSystemInput");
     
     filterInput.addEventListener('keydown', function(e) {
-      // + Taste als Kombinieren-Shortcut
+      // + button as combine alternative
       if (e.key === '+' && !e.shiftKey) {
         e.preventDefault();
         triggerFilterAnimation(); // Pulsierender Effekt nach Abschluss der Filterung
         addCombinedFilter();
       }
       
-      // Enter für schnelle Filterung
+      // Enter for fast filter
       // not necessary because live filtering is active, so ..who cares //k0lp4tzki 25.03.2025
       if (e.key === 'Enter') {
         applyCurrentFilter();
       }
       
-      // Escape zum Zurücksetzen
+      // Escape to reset
+      
       if (e.key === 'Escape') {
         resetFilter();
       }

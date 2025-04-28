@@ -2,7 +2,7 @@
 /**
  * Unified Audit Dashboard
  * 
- * (c) 2025 Your Name (github.com/k0lp4tzki)
+ * (c) 2025 Dennis Kolpatzki (github.com/k0lp4tzki)
  * 
  * This project is licensed under the MIT License.
  * 

@@ -1,17 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
     let countdownInterval;
+    // while translating this file i realised this was a try to reload the table data dynamically every 15 minutes because the dbms_scheduler sends the data in this frequence. But i never used this code..
+    // feel free to complete
 
-    // Funktion für den Countdown zur nächsten Viertelstunde
+    // 15 min countdown
     function startCountdown() {
         const now = new Date();
         let minutes = now.getMinutes();
         let seconds = now.getSeconds();
 
-        // Berechne die Minuten zur nächsten Viertelstunde
+        // magic
         let nextQuarter = 15 - (minutes % 15);
-        if (nextQuarter === 15) nextQuarter = 0;  // Falls genau auf der Viertelstunde, direkt ab jetzt zählen
+        if (nextQuarter === 15) nextQuarter = 0;  // exactly 15 min
 
-        // Berechne die verbleibenden Sekunden bis zur nächsten Viertelstunde
+        // calc remainig seconds
         let timeRemaining = nextQuarter * 60 - seconds;
 
         countdownInterval = setInterval(function () {
@@ -28,14 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000); // Jede Sekunde aktualisieren
     }
 
-    // Funktion, um Daten neu zu laden (Hier deine Datenaktualisierungslogik)
+    // Yeah.. missing logic for refreh data
     function refreshData() {
-        // Deine Logik zum Neuladen der Daten
         console.log("Reload data..");
-        // Beispiel: Neuladen der Charts oder der Tabelle
-        // Du kannst hier einen API-Aufruf oder eine AJAX-Anfrage hinzufügen
     }
 
-    // Starte den Countdown, wenn die Seite geladen ist
     startCountdown();
 });

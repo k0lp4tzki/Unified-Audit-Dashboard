@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("main.js initialized");
 
-    // 1. Elementreferenzen
+    // 1. Elements
     const tableBody = document.getElementById("auditTableBody");
     const paginationContainer = document.querySelector(".pagination");
     const resetBtn = document.getElementById("resetBtn"); // Reset-Button hinzufügen
 
-    // 2. Globale Konfiguration
+    // 2. Global Var
     window.rowsPerPage = 25;
     window.totalPages= 10;
     window.currentPage = 1;
     window.currentPageRecent = 1;
     window.filteredEntries = [];
 
-    // 3. Hauptfunktionen
+    // 3. main function
     window.updateTableData = function (entries, currentPage) {
         console.log("Refresh table with", entries.length, "Entries, Page", currentPage);
 
@@ -105,9 +105,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const page = parseInt(this.dataset.page);
                 const dataSource = window.filteredEntries.length > 0 
                     ? window.filteredEntries 
-                    : window.recentEntries; // Hier haben wir den History-Teil entfernt
+                    : window.recentEntries; 
         
-                window.currentPageRecent = page; // Es wird nur die Seite für die "recentEntries" aktualisiert
+                window.currentPageRecent = page; 
         
                 window.updateTableData(dataSource, page);
             });
@@ -118,12 +118,12 @@ document.addEventListener("DOMContentLoaded", function () {
        function updatePagination(totalEntries, currentPage) {
         console.log("Refresh pagination for", totalEntries, "entries");
     
-        // Erstmal Pagination Container leeren
+        // Clear pagination container
         paginationContainer.innerHTML = "";
     
         const totalPages = Math.ceil(totalEntries / window.rowsPerPage);
     
-        // Nur wenn überhaupt Einträge vorhanden sind, bauen wir Pagination auf
+        // Show pagination if entries exists
         if (totalPages > 1) {
             if (currentPage > 1) {
                 const prevLink = createPageLink(currentPage - 1, "&laquo;");
@@ -192,21 +192,21 @@ document.addEventListener("DOMContentLoaded", function () {
         return pageLink;
     }
 
-    // Reset-Funktion
+    // Reset-Function
     function handleReset() {
         console.log("Reset done");
         window.filteredEntries = [];
-        window.currentPageRecent = 1; // Wir setzen nur die Seite für die "recentEntries" zurück
-        window.updateTableData(window.recentEntries, window.currentPageRecent); // Nur die "recentEntries" werden verwendet
+        window.currentPageRecent = 1; 
+        window.updateTableData(window.recentEntries, window.currentPageRecent); 
     }
     
 
-    // Event Listener für Reset-Button
+    // Event Listener for resetbtn
     if (resetBtn) {
         resetBtn.addEventListener("click", handleReset);
     }
 
-    // Initialisierung beim Laden
+    // Init on Load
     function initialize() {
         console.log("Initializing table...");
         if (window.recentEntries) {
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Verzögerte Initialisierung für den Fall, dass die Daten später geladen werden
+    // fake delay to prevent missing data
     const initInterval = setInterval(() => {
         if (window.recentEntries) {
             clearInterval(initInterval);
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 100);
 
-    // Timeout nach 5 Sekunden
+    // timeout after 5 secs
     setTimeout(() => {
         clearInterval(initInterval);
         if (!window.recentEntries) {

@@ -19,17 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleButton.style.left = '25%';
         }
 
-        // Sidebar nach dem Laden sichtbar machen
+        // Show sidebar after load
         sidebar.style.visibility = 'visible';
     }
 
     function toggleSidebar() {
         const isCollapsed = sidebar.classList.toggle('collapsed');
         
-        // Zustand in localStorage speichern
+        // Save state in localstorage
         localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
 
-        // Zustand auch in die Session speichern
+        // Save state in session
         fetch('save_session.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -41,14 +41,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     toggleButton.addEventListener('click', toggleSidebar);
 
-    // 1. Zustand aus localStorage holen
+    // 1. Get statea from localstorage
     let storedState = localStorage.getItem('sidebarCollapsed');
 
     if (storedState !== null) {
-        // Falls in localStorage vorhanden, diesen Zustand nutzen
         applySidebarState(storedState === '1');
     } else {
-        // 2. Falls kein localStorage-Wert, Zustand aus Session laden
+        // 2. Fallback from session
         fetch('fetch_session.php?sidebar')
             .then(response => response.text())
             .then(state => {
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 applySidebarState(isCollapsed);
             })
             .catch(() => {
-                // Falls Session-Request fehlschlägt, Standardwert (ausgeklappt) nutzen
+                // last fallback use default
                 applySidebarState(false);
             });
     }

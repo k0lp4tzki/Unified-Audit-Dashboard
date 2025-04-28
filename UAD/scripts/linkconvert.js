@@ -28,7 +28,7 @@ function linkUsername() {
     });
 }
 
-//In this function, "source" is converted into a link so if you use enterprise manager you can link the source database to jump directly to it.
+// In this function, "source" is converted into a link so if you use enterprise manager you can link the source database to jump directly to it.
 // Run the linkUsername function once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     linkUsername(); // Call the function to link all source databases in the table

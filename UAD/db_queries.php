@@ -2,7 +2,7 @@
 /**
  * Unified Audit Dashboard
  * 
- * (c) 2025 Your Name (github.com/k0lp4tzki)
+ * (c) 2025 Dennis Kolpatzki (github.com/k0lp4tzki)
  * 
  * This project is licensed under the MIT License.
  * 
@@ -32,15 +32,15 @@ $isAjaxRequest = isset($_GET['ajax']) ||
                 (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
                  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 
-// Sicherstellen dass $connection existiert und gültig ist
+// Check for existing connection
 if (!isset($connection) || !is_resource($connection)) {
     throw new Exception("Database connection not properly initialized");
 }
 
 function executeQuery($query, $params = []) {
     if (!is_array($params)) {
-        error_log("executeQuery ERROR: " . print_r($params, true)); // Ins Log schreiben
-        var_dump($params); // Direkt auf der Seite ausgeben
+        error_log("executeQuery ERROR: " . print_r($params, true)); // write to log
+        var_dump($params); // display error messages on page
         die();
     }
     global $connection;
@@ -106,7 +106,6 @@ $timelineEntries = [];
 while ($row = oci_fetch_assoc($stmtTimeline)) {
     $timelineEntries[] = $row;
 }
-
 
 $lineChartQuery = "
 SELECT TO_CHAR(event_timestamp, 'YYYY-MM-DD HH24') as EVENT_HOUR, COUNT(*) as EVENT_COUNT

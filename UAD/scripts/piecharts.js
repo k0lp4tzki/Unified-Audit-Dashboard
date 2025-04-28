@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let activeFilter = null; // Speichert den aktuell gesetzten Filter
+    let activeFilter = null; // Save current set filter
 
     // Audit Types Pie Chart
     const auditTypesCtx = document.getElementById('auditTypesChart').getContext('2d');

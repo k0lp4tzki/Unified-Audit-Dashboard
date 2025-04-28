@@ -2,7 +2,7 @@
 /**
  * Unified Audit Dashboard
  * 
- * (c) 2025 Your Name (github.com/k0lp4tzki)
+ * (c) 2025 Dennis Kolpatzki (github.com/k0lp4tzki)
  * 
  * This project is licensed under the MIT License.
  * 
@@ -20,9 +20,9 @@
  * in the software.
  */
 
-session_unset(); // Löscht alle Session-Variablen
-session_destroy(); // Zerstört die Session
-// Zur Login-Seite weiterleiten
+session_unset(); // clear session vars
+session_destroy(); // destroy session
+// redirect to login page
 header("Location: login.php");
 exit;
 ?>
