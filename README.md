@@ -21,7 +21,7 @@ This project provides a clean, modern web interface to view and filter audit dat
 ![Preview](UAD/assets/grafik-4.png)
 
 Update: Day-to-Hour Filtering!
-![](UAD/assets/day-to-hour.gif)
+![](UAD/assets/linechart_update.gif)
 
 
 
