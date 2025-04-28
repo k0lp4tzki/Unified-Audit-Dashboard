@@ -105,6 +105,11 @@ Verify that oci_connect() or new PDO('oci:...') successfully connects to your Or
         CONNECT TO dbsnmp IDENTIFIED BY "XYZ"
         USING '//IP:PORT/DASHBOARD';
 
+12. If you want to use the LDAP Authentication Method, you need to put in your LDAP / Domainserver into the login.php. Otherwise, set the destination directory in your httpd.conf direct to index.php instead of login.php
+
+        # List of resources to look for when the client requests a directory
+        DirectoryIndex login.php or index.php
+
 
 If connection fails:
 
