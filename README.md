@@ -12,18 +12,28 @@ This project provides a clean, modern web interface to view and filter audit dat
 
 ---
 
+# Update 05-05-2025
 
-## Preview
-![Dashboard Preview](UAD/assets/grafik-1.png)
-![Filter Example](UAD/assets/grafik-6.png)
-![Preview](UAD/assets/grafik-2.png)
-![Preview](UAD/assets/grafik-3.png)
-![Preview](UAD/assets/grafik-4.png)
+### Dynamic Linechart
+Linechart reacts now dynamically to the filtered content
+![linechart_dynamic-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/63725f6b-b89b-43fa-b97d-30a0d5300c31)
 
-Update: Day-to-Hour Filtering!
+
+### Display Filter 
+![grafik](https://github.com/user-attachments/assets/0f47b2d8-edec-4145-a829-f5e6e227e110)
+
+# Update 05-01-2025: 
+### Day-to-Hour Filtering!
 ![](UAD/assets/linechart_update.gif)
 
 
+
+# Preview
+![grafik](https://github.com/user-attachments/assets/472c00c2-3c4e-45e1-be45-4c269edcd1fd)
+
+![Filter Example](UAD/assets/grafik-6.png)
+
+![grafik](https://github.com/user-attachments/assets/e0f12947-1a1a-414a-81a8-3cf6fe1c3bbb)
 
 
 ## Project Structure
