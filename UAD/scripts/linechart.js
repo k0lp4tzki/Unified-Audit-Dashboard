@@ -1,4 +1,5 @@
 // linechart.js
+
 document.addEventListener('DOMContentLoaded', function() {
     // === Global State ===
     let currentMode = "day"; // 'day' or 'hour'
@@ -7,8 +8,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const searchInput = document.getElementById('filterSystemInput');
     const resetBtn = document.getElementById('resetBtn');
+    const chartCanvas = document.getElementById('eventsTimeChart');
+    const chartContainer = chartCanvas.parentNode;
+   const filterLabel = document.getElementById('linechartFilterLabel');
+    let eventsTimeChart; // Global chart reference
 
-    // === Aggregate events by day ===
+    // === Aggregate original data ===
     Object.entries(eventsByHour).forEach(([label, count]) => {
         const day = label.slice(0, 10); // Extract 'YYYY-MM-DD'
         if (!eventsByDay[day]) {
@@ -28,17 +33,95 @@ document.addEventListener('DOMContentLoaded', function() {
             eventsByDay[day] += count;
         });
     }
-    
 
+    function drillDownToHours(day) {
+        currentMode = "hour";
+
+        const hourlyLabels = [];
+        const hourlyData = [];
+
+        for (let hour = 0; hour < 24; hour++) {
+            const formattedHour = hour.toString().padStart(2, '0');
+            const label = `${day} ${formattedHour}`; // "YYYY-MM-DD HH"
+            hourlyLabels.push(`${formattedHour}:00`);
+            hourlyData.push(eventsByHour[label] || 0);
+        }
+
+        eventsTimeChart.data.labels = hourlyLabels;
+        eventsTimeChart.data.datasets[0].data = hourlyData;
+        eventsTimeChart.data.datasets[0].label = `Audit Events for ${day}`;
+        eventsTimeChart.options.scales.x.title.text = "Hour of Day";
+        eventsTimeChart.update();
+    }
+
+    function backToDailyView() {
+        console.log('[DEBUG] backToDailyView() called');
+        currentMode = "day";
+        eventsTimeChart.data.labels = Object.keys(eventsByDay);
+        eventsTimeChart.data.datasets[0].data = Object.values(eventsByDay);
+        eventsTimeChart.data.datasets[0].label = "Audit Events (Past Days)";
+        eventsTimeChart.options.scales.x.title.text = "Date";
+        eventsTimeChart.update({ duration: 800, easing: 'easeOutCubic' });
+    }
+
+   function updateSearchInput(value) {
+     if (searchInput) {
+        searchInput.value = value;
+        if (filterLabel) filterLabel.textContent = `🔎 Filter active: ${value}`;
+        const e = new Event('input', { bubbles: true });
+        searchInput.dispatchEvent(e);
+    }
+}
+
+    function handleClearSearch() {
+        console.log('[DEBUG] handleClearSearch() triggered');
+        if (searchInput && searchInput.value.trim() === "") {
+            console.log('[DEBUG] Search input is empty, calling backToDailyView()');
+            if (filterLabel) filterLabel.textContent = '';
+		backToDailyView();
+        }
+    }
+
+    function updateLineChartBasedOnFilter() {
+        const filter = searchInput?.value.trim();
+        if (!filter) return;
+
+        if (currentMode === "hour") {
+            console.log('[DEBUG] Skip filter update during hourly drilldown');
+            return;
+        }
+
+        const filtered = window.filteredEntries || [];
+        const aggregated = {};
+
+        filtered.forEach(entry => {
+            const date = entry.EVENT_TIMESTAMP.slice(0, 10);
+            if (!aggregated[date]) {
+                aggregated[date] = 0;
+            }
+            aggregated[date]++;
+        });
+
+        const labels = Object.keys(aggregated).sort();
+        const data = labels.map(l => aggregated[l]);
+
+        if (labels.length) {
+            currentMode = "day";
+            eventsTimeChart.data.labels = labels;
+            eventsTimeChart.data.datasets[0].data = data;
+            eventsTimeChart.data.datasets[0].label = `Audit Events (filtered)`;
+            eventsTimeChart.options.scales.x.title.text = "Date";
+            eventsTimeChart.update();
+        }
+    }
+
+    // === Create initial chart ===
+    const eventsTimeCtx = chartCanvas.getContext('2d');
     const eventsTimeLabels = Object.keys(eventsByDay);
     const eventsTimeData = Object.values(eventsByDay);
 
-    const eventsTimeCtx = document.getElementById('eventsTimeChart').getContext('2d');
-    let eventsTimeChart;
-
-    // === Display 'No Data' Message if Needed ===
     if (eventsTimeData.every(val => val === 0)) {
-        document.getElementById('eventsTimeChart').parentNode.innerHTML = '<p style="text-align: center;">Currently no data to display!</p>';
+        chartContainer.innerHTML = '<p style="text-align: center;">Currently no data to display!</p>';
     } else {
         eventsTimeChart = new Chart(eventsTimeCtx, {
             type: 'line',
@@ -47,8 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Audit Events (Past Days)',
                     data: eventsTimeData,
-                    borderColor: '#36A2EB',
-                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                    borderColor: '#20B2AA',
+                    backgroundColor: 'rgba(32, 178, 170, 0.15)',
                     fill: true,
                     tension: 0.3,
                     pointRadius: 5,
@@ -64,25 +147,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     easing: 'easeOutQuart'
                 },
                 scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Date'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Number of Events'
-                        }
-                    }
+                    x: { title: { display: true, text: 'Date' } },
+                    y: { title: { display: true, text: 'Number of Events' } }
                 },
                 plugins: {
                     tooltip: {
                         callbacks: {
                             title: function(tooltipItems) {
-                                const date = tooltipItems[0].label;
-                                return `📅 ${date}`;
+                                return `📅 ${tooltipItems[0].label}`;
                             },
                             label: function(tooltipItem) {
                                 return `🔢 Events: ${tooltipItem.formattedValue}`;
@@ -94,10 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
-
     // === Click Handler for Drill-Down and Search Update ===
-    document.getElementById('eventsTimeChart').addEventListener('click', function(evt) {
+    chartCanvas.addEventListener('click', function(evt) {
         if (!eventsTimeChart) return;
         const points = eventsTimeChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
         if (points.length) {
@@ -114,71 +184,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // === Drill-Down Function to Hour View ===
-    function drillDownToHours(day) {
-        currentMode = "hour";
-
-        const hourlyLabels = [];
-        const hourlyData = [];
-
-        for (let hour = 0; hour < 24; hour++) {
-            const formattedHour = hour.toString().padStart(2, '0');
-            const label = `${day} ${formattedHour}`; // "YYYY-MM-DD HH"
-
-            hourlyLabels.push(`${formattedHour}:00`);
-            hourlyData.push(eventsByHour[label] || 0);
-        }
-
-        eventsTimeChart.data.labels = hourlyLabels;
-        eventsTimeChart.data.datasets[0].data = hourlyData;
-        eventsTimeChart.data.datasets[0].label = `Audit Events for ${day}`;
-        eventsTimeChart.options.scales.x.title.text = "Hour of Day";
-        eventsTimeChart.update();
-    }
-// === Return to Daily View ===
-function backToDailyView() {
-    console.log('[DEBUG] backToDailyView() called');
-    if (!eventsTimeChart) {
-        console.log('[DEBUG] No chart available');
-        return;
-    }
-    currentMode = "day";
-
-    eventsTimeChart.data.labels = Object.keys(eventsByDay);
-    eventsTimeChart.data.datasets[0].data = Object.values(eventsByDay);
-    eventsTimeChart.data.datasets[0].label = "Audit Events (Past Days)";
-    eventsTimeChart.options.scales.x.title.text = "Date";
-    
-    eventsTimeChart.update({
-        duration: 800,     // <-- NEU: Sanfte Animation
-        easing: 'easeOutCubic' // <-- NEU: Schöne Kurve
-    });
-}
-
-    // === Update Search Input ===
-    function updateSearchInput(value) {
-        if (searchInput) {
-            searchInput.value = value;
-            const inputEvent = new Event('input', { bubbles: true });
-            searchInput.dispatchEvent(inputEvent);
-        }
-    }
-
-// === Clear Search Input Handler ===
-function handleClearSearch() {
-    console.log('[DEBUG] handleClearSearch() triggered');
+    // === Listen to input clear and ESC key ===
     if (searchInput) {
-        console.log('[DEBUG] Current searchInput value:', searchInput.value.trim());
+        searchInput.addEventListener('input', function() {
+    handleClearSearch();
+    updateLineChartBasedOnFilter();
+    if (filterLabel) {
+        const val = searchInput.value.trim();
+        filterLabel.textContent = val ? `🔎 Filter active: ${val}` : '';
     }
-    if (searchInput && searchInput.value.trim() === "") {
-        console.log('[DEBUG] Search input is empty, calling backToDailyView()');
-        backToDailyView();
-    }
-}
+});
 
-    // Listen to manual clearing
-    if (searchInput) {
-        searchInput.addEventListener('input', handleClearSearch);
         searchInput.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 searchInput.value = '';
@@ -189,31 +205,25 @@ function handleClearSearch() {
         });
     }
 
+    // === Reset Button support ===
     if (resetBtn) {
         resetBtn.addEventListener('click', function() {
             console.log('[DEBUG] Reset-Button wurde geklickt!');
-            
-            resetBtn.disabled = true; // Deaktivieren
-            
+            resetBtn.disabled = true;
             if (searchInput) {
                 console.log('[DEBUG] Clearing searchInput via Reset Button');
                 searchInput.value = '';
                 const inputEvent = new Event('input', { bubbles: true });
                 searchInput.dispatchEvent(inputEvent);
-            }
-    
+            if (filterLabel) filterLabel.textContent = '';
+	    }
             rebuildEventsByDay();
             backToDailyView();
-    
-            setTimeout(() => {
-                resetBtn.disabled = false; // Nach 1 Sekunde wieder aktivieren
-            }, 1000);
+            setTimeout(() => { resetBtn.disabled = false; }, 1000);
         });
     }
-    
-    
 
-    // === Toggle Button Logic for Line Chart (Expand/Collapse) ===
+    // === Toggle line chart visibility ===
     const toggleButton = document.getElementById('toggleLineChart');
     const lineChartContainer = document.getElementById('lineChartContainer');
     let isCollapsed = false;
@@ -228,7 +238,6 @@ function handleClearSearch() {
         }
     }
 
-    // Fetch saved state from session via AJAX
     const xhrFetchState = new XMLHttpRequest();
     xhrFetchState.open('GET', 'fetch_session.php?linechart', true);
     xhrFetchState.onload = function() {
@@ -239,15 +248,14 @@ function handleClearSearch() {
     };
     xhrFetchState.send();
 
-    // Event listener for the toggle button
     toggleButton.addEventListener('click', function() {
         isCollapsed = !isCollapsed;
         applyLineChartState();
 
-        // Save the state in PHP session via AJAX
         const xhrSaveState = new XMLHttpRequest();
         xhrSaveState.open('POST', 'save_session.php', true);
         xhrSaveState.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhrSaveState.send('linechart_collapsed=' + (isCollapsed ? '1' : '0'));
     });
 });
+

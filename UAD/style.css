@@ -33,7 +33,7 @@ h5 {
 }
 
 .powered {
-    font-size: 14px; 
+    font-size: 14px; /* Kleinere Schriftgröße für "powered by Deichmann" */
     color: gray;
     margin-top: 5px; /* Leichter Abstand nach oben */
 }
@@ -122,7 +122,7 @@ td:hover {
     /*! top: 50%; */
     left: 25%;
     transform: translateX(-50%);
-    background-color: #009460;
+    background-color: lightseagreen;
     color: white;
     border: none;
     padding: 10px;
@@ -167,7 +167,7 @@ td:hover {
 
 /* Button styling */
 .btn {
-    background-color: #009460;
+    background-color: lightseagreen;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -555,4 +555,31 @@ Element {
     color: white;
     border-color: #007bff;
   }
-  
+ 
+ #headerlogo {
+
+ max-height: 10%;
+  width: auto;
+  margin: 10px auto;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
+}
+
+#dashboard-footer {
+  background-color: #f8f9fa;
+  color: #333;
+  padding: 15px 0;
+  font-size: 0.9rem;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+}
+
+#dashboard-footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+#dashboard-footer a:hover {
+  text-decoration: underline;
+}
+

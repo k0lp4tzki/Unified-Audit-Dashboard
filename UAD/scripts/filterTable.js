@@ -375,7 +375,7 @@ function addCombinedFilter() {
     // UI zurücksetzen
     filterInput.value = "";
     filterInput.focus();
-    triggerButtonPulse(combineBtn);
+   // triggerButtonPulse(combineBtn);
     applyCurrentFilter();
 
   }

@@ -8,9 +8,10 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">    
+<link rel="icon" href="/favicon.ico" type="image/x-icon"> 
 </head>
 <body>
 </head>
@@ -23,7 +24,7 @@
           
             <!-- Spinner um das Bild herum -->
             <div class="spinner">
-                <img src="resources/loader.png" alt="Logo" class="preloader-img">
+                <img src="resources/spinner.png" alt="Logo" class="preloader-img">
             </div>
         </div>
     </div>
@@ -50,7 +51,8 @@
                     <div class="card-header">ACTION TYPES</div>
                     <div class="card-body">
                         <div class="chart-container">
-                            <canvas id="auditTypesChart"></canvas>
+                          
+				<canvas id="auditTypesChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -118,10 +120,7 @@
     <!-- Main Content Area (Table and Line Chart) -->
     <div class="container mt-5" id="mainContainer">        
         <div class="title-container text-center">
-            <img id="oracleLogo" src="resources/header.png" alt="Oracle Logo" class="logo">
-            
-            
-            <h5>UNIFIED AUDIT DASHBOARD</h5>
+            <img id="headerlogo" src="resources/kolpatzki.png" alt="header Logo" class="logo">
         </div>
         
         <div class="row mb-4">
@@ -139,11 +138,14 @@
                         <button id="toggleLineChart" class="btn btn-sm btn-link float-end">
                             <span id="toggleIcon">[-]</span>
                         </button>
+                        <button id="backToDays" style="display:none;">Back to Daily View</button>
                     </div>
                     <div class="card-body" id="lineChartContainer">
                         <div class="card-body">
                             <div class="mb-3"></div>
-                            <div>
+                            <div id="linechartFilterLabel" class="mb-2 text-muted" style="text-align: center; font-style: italic;"></div>
+
+			    <div>
                                 <canvas id="eventsTimeChart" style="display: block; box-sizing: border-box; height: 350px; width: 100%;" width="100%" height="350"></canvas>
                             </div>
                         </div>
@@ -154,7 +156,8 @@
         <!-- Audit Events Table -->
         <div class="card">           
                 <!-- Pagination Controls with Page Numbers -->
-            <div class="pagination"></div>      
+            <div class="pagination"></div>
+     
 
 <!-- Table Container -->
 <div id="table-container" class="card-body">
@@ -195,6 +198,11 @@
         </tbody>
     </table>
 </div>
+<footer id="dashboard-footer">
+  <div class="container text-center">
+    <p>&copy; 2025 <strong>kolpatzki.de</strong> – Released under the <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT License</a></p>
+  </div>
+</footer>
 
 </div>
     </div>
