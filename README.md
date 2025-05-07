@@ -12,6 +12,12 @@ This project provides a clean, modern web interface to view and filter audit dat
 
 ---
 
+# Coming soon!
+### Generate Monthly reports about your auditing!
+
+![grafik](https://github.com/user-attachments/assets/9f99a6a1-140f-4043-accc-6353c7e623de)
+
+
 # Update 05-05-2025
 
 ### Dynamic Linechart
