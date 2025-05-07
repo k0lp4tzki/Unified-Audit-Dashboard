@@ -102,6 +102,65 @@ td:hover {
     }
 }
 
+.chart-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Standard/Desktop Ansicht */
+.sidebar-wrapper {
+    display: block;
+    max-width: 400px;
+  }
+  
+  /* Piechart Grid untereinander auf Mobilgeräten */
+  @media (max-width: 768px) {
+    .sidebar-wrapper {
+      max-width: 100%;
+      padding: 0 10px;
+    }
+  
+    .chart-container,
+    .audit-summary-cards .card {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  
+    .sidebar-wrapper .row {
+      flex-direction: column;
+    }
+  
+    .sidebar-wrapper .col-md-6,
+    .sidebar-wrapper .col-md-12 {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+
+
+.btn-report  {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #0056b3; /* Bootstrap danger color */
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-report:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    color: white;
+}
+
+.btn-report:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+  
 
 /* Hover effect for chart containers */
 .chart-container:hover {
@@ -122,7 +181,7 @@ td:hover {
     /*! top: 50%; */
     left: 25%;
     transform: translateX(-50%);
-    background-color: lightseagreen;
+    background-color: #009460;
     color: white;
     border: none;
     padding: 10px;
@@ -167,7 +226,7 @@ td:hover {
 
 /* Button styling */
 .btn {
-    background-color: lightseagreen;
+    background-color: #009460;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -387,7 +446,7 @@ Element {
 /* Styling for the logout container */
 
 .logout-container {
-   position: absolute;
+    position: absolute;
     top: 10px;
     right: 20px;
     z-index: 10;
@@ -555,31 +614,4 @@ Element {
     color: white;
     border-color: #007bff;
   }
- 
- #headerlogo {
-
- max-height: 10%;
-  width: auto;
-  margin: 10px auto;
-  display: block;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
-}
-
-#dashboard-footer {
-  background-color: #f8f9fa;
-  color: #333;
-  padding: 15px 0;
-  font-size: 0.9rem;
-  border-top: 1px solid #ddd;
-  margin-top: 40px;
-}
-
-#dashboard-footer a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-#dashboard-footer a:hover {
-  text-decoration: underline;
-}
-
+  

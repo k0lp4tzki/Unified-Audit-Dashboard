@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
             eventsByDay[day] += count;
         });
     }
+    
 
     function drillDownToHours(day) {
         currentMode = "hour";
@@ -50,19 +51,40 @@ document.addEventListener('DOMContentLoaded', function() {
         eventsTimeChart.data.labels = hourlyLabels;
         eventsTimeChart.data.datasets[0].data = hourlyData;
         eventsTimeChart.data.datasets[0].label = `Audit Events for ${day}`;
+        eventsTimeChart.data.datasets[0].pointBackgroundColor = hourlyLabels.map(() => '#20B2AA'); // <– Alle grün
         eventsTimeChart.options.scales.x.title.text = "Hour of Day";
         eventsTimeChart.update();
+        
     }
 
     function backToDailyView() {
         console.log('[DEBUG] backToDailyView() called');
         currentMode = "day";
-        eventsTimeChart.data.labels = Object.keys(eventsByDay);
-        eventsTimeChart.data.datasets[0].data = Object.values(eventsByDay);
-        eventsTimeChart.data.datasets[0].label = "Audit Events (Past Days)";
+    
+        const today = new Date();
+        const labels = [];
+        const values = [];
+    
+        for (let i = 7; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const label = date.toISOString().slice(0, 10);
+            labels.push(label);
+            values.push(eventsByDay[label] || 0);
+        }
+    
+        const pointColors = labels.map(label =>
+            label === today.toISOString().slice(0, 10) ? 'red' : '#20B2AA'
+        );
+    
+        eventsTimeChart.data.labels = labels;
+        eventsTimeChart.data.datasets[0].data = values;
+        eventsTimeChart.data.datasets[0].pointBackgroundColor = pointColors;
+        eventsTimeChart.data.datasets[0].label = "Audit Events (Last 8 Days)";
         eventsTimeChart.options.scales.x.title.text = "Date";
         eventsTimeChart.update({ duration: 800, easing: 'easeOutCubic' });
     }
+    
 
    function updateSearchInput(value) {
      if (searchInput) {
@@ -115,56 +137,78 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // === Create initial chart ===
-    const eventsTimeCtx = chartCanvas.getContext('2d');
-    const eventsTimeLabels = Object.keys(eventsByDay);
-    const eventsTimeData = Object.values(eventsByDay);
-
-    if (eventsTimeData.every(val => val === 0)) {
-        chartContainer.innerHTML = '<p style="text-align: center;">Currently no data to display!</p>';
-    } else {
-        eventsTimeChart = new Chart(eventsTimeCtx, {
-            type: 'line',
-            data: {
-                labels: eventsTimeLabels,
-                datasets: [{
-                    label: 'Audit Events (Past Days)',
-                    data: eventsTimeData,
-                    borderColor: '#20B2AA',
-                    backgroundColor: 'rgba(32, 178, 170, 0.15)',
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                    duration: 1000,
-                    easing: 'easeOutQuart'
-                },
-                scales: {
-                    x: { title: { display: true, text: 'Date' } },
-                    y: { title: { display: true, text: 'Number of Events' } }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            title: function(tooltipItems) {
-                                return `📅 ${tooltipItems[0].label}`;
-                            },
-                            label: function(tooltipItem) {
-                                return `🔢 Events: ${tooltipItem.formattedValue}`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
+       // === Create initial chart with 7 days + today ===
+       const eventsTimeCtx = chartCanvas.getContext('2d');
+       const today = new Date();
+       const labels = [];
+       const values = [];
+   
+       for (let i = 7; i >= 0; i--) {
+           const date = new Date(today);
+           date.setDate(today.getDate() - i);
+           const label = date.toISOString().slice(0, 10);
+           labels.push(label);
+           values.push(eventsByDay[label] || 0);
+       }
+   
+       const pointColors = labels.map(label => {
+           return label === today.toISOString().slice(0, 10) ? 'red' : '#20B2AA';
+       });
+   
+       if (values.every(val => val === 0)) {
+           chartContainer.innerHTML = '<p style="text-align: center;">Currently no data to display!</p>';
+       } else {
+           eventsTimeChart = new Chart(eventsTimeCtx, {
+               type: 'line',
+               data: {
+                   labels: labels,
+                   datasets: [{
+                       label: 'Audit Events (Last 8 Days)',
+                       data: values,
+                       borderColor: '#20B2AA',
+                       backgroundColor: 'rgba(32, 178, 170, 0.15)',
+                       fill: true,
+                       tension: 0.3,
+                       pointRadius: 4,
+                       pointHoverRadius: 12,
+                       borderWidth: 2,
+                       pointBackgroundColor: pointColors
+                   }]
+               },
+               options: {
+                   responsive: true,
+                   maintainAspectRatio: false,
+                   animation: {
+                       duration: 1000,
+                       easing: 'easeOutQuart'
+                   },
+                   scales: {
+                       x: {
+                           title: { display: true, text: 'Date' },
+                           ticks: {
+                               autoSkip: false
+                           }
+                       },
+                       y: {
+                           title: { display: true, text: 'Number of Events' }
+                       }
+                   },
+                   plugins: {
+                       tooltip: {
+                           callbacks: {
+                               title: function(tooltipItems) {
+                                   return `📅 ${tooltipItems[0].label}`;
+                               },
+                               label: function(tooltipItem) {
+                                   return `🔢 Events: ${tooltipItem.formattedValue}`;
+                               }
+                           }
+                       }
+                   }
+               }
+           });
+       }
+   
 
     // === Click Handler for Drill-Down and Search Update ===
     chartCanvas.addEventListener('click', function(evt) {

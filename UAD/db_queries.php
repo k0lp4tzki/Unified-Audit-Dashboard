@@ -1,29 +1,7 @@
 <?php
-/**
- * Unified Audit Dashboard
- * 
- * (c) 2025 Dennis Kolpatzki (github.com/k0lp4tzki)
- * 
- * This project is licensed under the MIT License.
- * 
- * If you find this project useful, feel free to support me:
- * ☕ Buy me a coffee: https://buymeacoffee.com/denniskolpatzki
- * 💸 PayPal: https://paypal.me/MindFck
- * 
- * Disclaimer:
- * This software is provided "as is", without warranty of any kind,
- * express or implied, including but not limited to the warranties of
- * merchantability, fitness for a particular purpose and noninfringement.
- * In no event shall the authors be liable for any claim, damages or other
- * liability, whether in an action of contract, tort or otherwise, arising
- * from, out of or in connection with the software or the use or other dealings
- * in the software.
- */
-
-//ini_set('display_errors', 1);
-//ini_set('error_reporting', E_ALL);
-//error_log('Debugging db query aktiviert');
-// There was a try with AJAX Page Loading, but i never get it done
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
+error_log('Debugging db query aktiviert');
 header_remove();
 header('Cache-Control: max-age=86400, public');
 ob_start();
@@ -32,15 +10,15 @@ $isAjaxRequest = isset($_GET['ajax']) ||
                 (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
                  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 
-// Check for existing connection
+// Sicherstellen dass $connection existiert und gültig ist
 if (!isset($connection) || !is_resource($connection)) {
     throw new Exception("Database connection not properly initialized");
 }
 
 function executeQuery($query, $params = []) {
     if (!is_array($params)) {
-        error_log("executeQuery ERROR: " . print_r($params, true)); // write to log
-        var_dump($params); // display error messages on page
+        error_log("executeQuery ERROR: " . print_r($params, true)); // Ins Log schreiben
+        var_dump($params); // Direkt auf der Seite ausgeben
         die();
     }
     global $connection;
@@ -107,22 +85,28 @@ while ($row = oci_fetch_assoc($stmtTimeline)) {
     $timelineEntries[] = $row;
 }
 
+
 $lineChartQuery = "
-SELECT TO_CHAR(event_timestamp, 'YYYY-MM-DD HH24') as EVENT_HOUR, COUNT(*) as EVENT_COUNT
+SELECT
+  TO_CHAR(event_timestamp, 'YYYY-MM-DD HH24') AS EVENT_HOUR,
+  COUNT(*) AS EVENT_COUNT
 FROM DASHBOARD
 WHERE return_code <> 0
-AND event_timestamp >= TRUNC(SYSDATE) - INTERVAL '4' DAY
+  AND event_timestamp >= TRUNC(SYSDATE) - INTERVAL '7' DAY
+  AND event_timestamp < TRUNC(SYSDATE) + INTERVAL '1' DAY
 GROUP BY TO_CHAR(event_timestamp, 'YYYY-MM-DD HH24')
-ORDER BY EVENT_HOUR";
+ORDER BY MIN(event_timestamp)";
+
+
 
 $stmtLineChart = executeQuery($lineChartQuery);
 
-// Initialize hours for the last 2 days with zero counts
-$startDate = new DateTime('-2 days'); // 2-day range starting from 3 days ago
+// Initialize hours for the last 7 days + today (8 days total)
+$startDate = new DateTime('-7 days'); // Start: heute - 7
 $eventsByHour = [];
-for ($i = 0; $i < 3 * 24; $i++) {
+for ($i = 0; $i < 8 * 24; $i++) { // 8 Tage * 24 Stunden = 192
     $hourLabel = $startDate->format('Y-m-d H');
-    $eventsByHour[$hourLabel] = 0; // Initialize each hour with zero events
+    $eventsByHour[$hourLabel] = 0; // Fülle mit 0 vor
     $startDate->modify('+1 hour');
 }
 
@@ -135,7 +119,6 @@ while ($row = oci_fetch_assoc($stmtLineChart)) {
 }
 
 // Piechart Query: Top 5 ACTIONS
-// Change the Interval if needed for a longer or shorter time frame
 $actionCountQuery = "
     SELECT action_name, COUNT(*) as ACTION_COUNT
     FROM DASHBOARD
@@ -150,7 +133,6 @@ while ($row = oci_fetch_assoc($stmtActionCount)) {
 }
 
 // Piechart Query: Top 5 DB Users
-// Change the Interval if needed for a longer or shorter time frame
 $dbUserQuery = "
     SELECT dbusername, COUNT(*) as USER_COUNT
     FROM DASHBOARD
@@ -165,7 +147,6 @@ while ($row = oci_fetch_assoc($stmtDbUser)) {
 }
 
 // Piechart Query: Top 5 Source Databases
-// Change the Interval if needed for a longer or shorter time frame
 $sourceDatabaseQuery = "
     SELECT source_database, COUNT(*) as SOURCE_COUNT
     FROM DASHBOARD
@@ -180,11 +161,10 @@ while ($row = oci_fetch_assoc($stmtSourceDatabase)) {
 }
 
 // Piechart Query: Top 5 Userhosts
-// Change the Interval if needed for a longer or shorter time frame
 $userhostQuery = "
     SELECT userhost, COUNT(*) as USERHOST_COUNT
     FROM DASHBOARD
-    WHERE return_code <> 0 AND event_timestamp >= TRUNC(SYSDATE) - INTERVAL '2' DAY
+    WHERE return_code <> 0 AND event_timestamp >= TRUNC(SYSDATE) - INTERVAL '3' DAY
     GROUP BY userhost
     ORDER BY USERHOST_COUNT DESC
     FETCH FIRST 5 ROWS ONLY";
