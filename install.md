@@ -112,6 +112,19 @@ Verify that oci_connect() or new PDO('oci:...') successfully connects to your Or
         DirectoryIndex login.php or index.php
 
 
+# Customization:
+## All sections are to find in index.html
+
+            <div class="spinner"> //refere to your own spinner logo
+            ---
+            <div class="title-container text-center"> //Insert your own header logo
+                <img id="headerlogo" src="resources/kolpatzki.png" alt="header Logo" class="logo">
+            </div>
+            ---
+            <footer id="dashboard-footer"> //Copyright should be kept or referred 
+        
+
+
 
 If connection fails:
 
