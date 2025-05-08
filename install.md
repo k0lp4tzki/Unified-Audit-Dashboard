@@ -126,7 +126,7 @@ Verify that oci_connect() or new PDO('oci:...') successfully connects to your Or
 
 
 
-If connection fails:
+# If connection fails:
 
     Check LD_LIBRARY_PATH and ldconfig settings.
     Verify phpinfo() to confirm oci8 is loaded.
