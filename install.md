@@ -11,6 +11,7 @@ This guide explains the necessary system requirements and setup steps to success
 - **Web Server:** Apache HTTP Server
 - **PHP Version:** PHP 8 or higher
 - **Database:** Oracle Database i guess.. (tested with Oracle 19c)
+- **Unified Auditing must be enabled to retrieve and display data!
 
 ---
 
@@ -109,6 +110,7 @@ Verify that oci_connect() or new PDO('oci:...') successfully connects to your Or
 
         # List of resources to look for when the client requests a directory
         DirectoryIndex login.php or index.php
+
 
 
 If connection fails:
