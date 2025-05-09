@@ -12,6 +12,12 @@ This project provides a clean, modern web interface to view and filter audit dat
 
 ---
 
+# Update 05-09-2025
+## Reports functionality added
+
+![grafik](https://github.com/user-attachments/assets/cbe1349a-2ade-401f-8d1f-668f77b78083)
+
+
 # Coming soon!
 ### Generate Monthly reports about your auditing!
 
