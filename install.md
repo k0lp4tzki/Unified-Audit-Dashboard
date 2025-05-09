@@ -11,6 +11,7 @@ This guide explains the necessary system requirements and setup steps to success
 - **Web Server:** Apache HTTP Server
 - **PHP Version:** PHP 8 or higher
 - **Database:** Oracle Database i guess.. (tested with Oracle 19c)
+- **Unified Auditing must be enabled to retrieve and display data!
 
 ---
 
@@ -111,7 +112,21 @@ Verify that oci_connect() or new PDO('oci:...') successfully connects to your Or
         DirectoryIndex login.php or index.php
 
 
-If connection fails:
+# Customization:
+## All sections are to find in index.html
+
+            <div class="spinner"> //refere to your own spinner logo
+            ---
+            <div class="title-container text-center"> //Insert your own header logo
+                <img id="headerlogo" src="resources/kolpatzki.png" alt="header Logo" class="logo">
+            </div>
+            ---
+            <footer id="dashboard-footer"> //Copyright should be kept or referred 
+        
+
+
+
+# If connection fails:
 
     Check LD_LIBRARY_PATH and ldconfig settings.
     Verify phpinfo() to confirm oci8 is loaded.
