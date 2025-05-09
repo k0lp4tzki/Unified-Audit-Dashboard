@@ -1,5 +1,6 @@
 <?php
 include 'report_data.php'; // Holt $reportData + $monthLabel
+$source = $_GET['source'] ?? ''; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,15 +17,16 @@ include 'report_data.php'; // Holt $reportData + $monthLabel
       <h1 class="text-primary">📄 Audit Monthly Summary</h1>
       <p class="text-muted">Time window: <?= $monthLabel ?> | Created on: <?= date('m-d-Y') ?></p>
     </div>
-    
-    <div class="alert alert-info text-center">
-    📊 <strong><?= number_format($reportData['total_events'], 0, ',', '.') ?></strong> Audit Events in current month.
+<div class="alert alert-info text-center">
+    <strong>📡 Source: <?= isset($source) && $source !== '' ? htmlspecialchars($source) : 'GLOBAL' ?></strong><br>
+    📊 <strong><?= number_format($reportData['total_events'], 0, ',', '.') ?></strong> Audit Events in current month.<br>
     Most active user: <code><?= htmlspecialchars($reportData['top_user']) ?></code>,
     most used action: <code><?= htmlspecialchars($reportData['top_action']) ?></code>.
 </div>
-    <canvas id="eventChart" height="100"></canvas>
 
-    <script>
+<canvas id="eventChart" height="100"></canvas>
+
+<script>
 document.addEventListener('DOMContentLoaded', () => {
   fetch('sources.php')
     .then(response => response.json())
@@ -50,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <input type="month" id="month" name="month" class="form-control" value="<?= $reportMonth ?>" required>
     </div>
     <div class="col-auto">
-      <label for="source" class="col-form-label">Database (UPPERCASE):</label>
+      <label for="source" class="col-form-label">Database:</label>
     </div>
     <div class="col-auto">
       <input list="dbList" id="source" name="source" class="form-control text-uppercase" 

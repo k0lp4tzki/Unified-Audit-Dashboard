@@ -181,7 +181,7 @@ td:hover {
     /*! top: 50%; */
     left: 25%;
     transform: translateX(-50%);
-    background-color: #009460;
+    background-color: lightseagreen;
     color: white;
     border: none;
     padding: 10px;
@@ -226,7 +226,7 @@ td:hover {
 
 /* Button styling */
 .btn {
-    background-color: #009460;
+    background-color: lightseagreen;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -615,3 +615,10 @@ Element {
     border-color: #007bff;
   }
   
+  #headerlogo {
+    max-height: 150px;         /* Passt die Höhe automatisch an */
+    width: auto;              /* Beibehaltung des Seitenverhältnisses */
+    margin: 10px auto;        /* Zentriert & Abstand */
+    display: block;           /* Für zentrierte Ausrichtung */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.83)); /* Sanfter Schatten */
+  }
