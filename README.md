@@ -18,7 +18,6 @@ This project provides a clean, modern web interface to view and filter audit dat
 ![grafik](https://github.com/user-attachments/assets/cbe1349a-2ade-401f-8d1f-668f77b78083)
 
 
-# Coming soon!
 ### Generate Monthly reports about your auditing!
 
 ![grafik](https://github.com/user-attachments/assets/9f99a6a1-140f-4043-accc-6353c7e623de)
